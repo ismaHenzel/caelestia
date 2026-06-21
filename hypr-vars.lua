@@ -11,7 +11,7 @@ return {
 
     -- Keybinds (migrated from hypr-vars.conf)
     kbLock = "SUPER + ALT + L",
-    kbRestoreLock = "SUPER + ALT + L",
+    kbRestoreLock = "SUPER + ALT + SHIFT + L",
     kbShowPanels = "SUPER + ALT + K",
     kbWindowFullscreen = "SUPER + ALT + F",
     kbWindowBorderedFullscreen = "SUPER + F",

@@ -28,6 +28,13 @@ hl.config({
 -- Window actions (vim-style focus/move)
 ----------------------------------------------------------------------
 -- Move active window in a direction
+-- NOTE: caelestia's hyprland/keybinds.lua binds `SUPER + SHIFT + L` to
+-- `systemctl suspend-then-hibernate` (the "Sleep" gesture). That bind is
+-- registered before this file loads, so without removing it our move-right
+-- bind below collides and the machine suspends instead of moving the window.
+-- Drop caelestia's sleep bind first so our bind wins.
+hl.unbind("SUPER + SHIFT + L")
+
 hl.bind("SUPER + SHIFT + h", hl.dsp.window.move({ direction = "left" }))
 hl.bind("SUPER + SHIFT + l", hl.dsp.window.move({ direction = "right" }))
 hl.bind("SUPER + SHIFT + k", hl.dsp.window.move({ direction = "up" }))
