@@ -3,7 +3,8 @@
 -- (see hyprland.lua: `local overrides = require("hypr-vars")`).
 return {
     -- Apps
-    browser = "google-chrome-stable",
+    browser = "firefox",
+    fileExplorer = "dolphin",
 
     -- Cursor
     cursorTheme = "phinger-cursors-dark",

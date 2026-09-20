@@ -69,6 +69,22 @@ hl.gesture({ fingers = 3, direction = "up", action = "fullscreen", mode = "maxim
 hl.gesture({ fingers = 3, direction = "down", action = "fullscreen", mode = "maximize" })
 
 ----------------------------------------------------------------------
+-- systemd graphical session
+----------------------------------------------------------------------
+-- Hyprland is started bare here (no uwsm), so nothing ever activates
+-- systemd's graphical-session.target. That target is `RefuseManualStart=yes`,
+-- so it can only be pulled up as a dependency -- hence the small wrapper unit
+-- at ~/.config/systemd/user/hyprland-session.target, which BindsTo it.
+--
+-- Without this, xdg-desktop-portal.service (Requisite=graphical-session.target)
+-- refuses to start, the org.freedesktop.portal.ScreenCast D-Bus interface never
+-- appears, and every Wayland screen-capture client -- OBS's Screen Capture
+-- (PipeWire) source, browser screen sharing -- silently has nothing to record.
+hl.on("hyprland.start", function()
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
+end)
+
+----------------------------------------------------------------------
 -- Plugins
 ----------------------------------------------------------------------
 -- Load hyprpm plugins (dynamic-cursors) on startup
@@ -84,7 +100,13 @@ end)
 -- Monitors (migrated from nwg-displays monitors.conf)
 ----------------------------------------------------------------------
 hl.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = 1 })
-hl.monitor({ output = "HDMI-A-1", mode = "3840x2160@30", position = "6661x3472", scale = 2 })
+-- 2560x1440@120 is ~498 MHz pixel clock, comfortably inside HDMI 2.0 TMDS.
+-- 3840x2160@120 needs ~1187 MHz over an HDMI 2.1 FRL link, which this
+-- TV/cable pair does not hold reliably: the sink intermittently drops every
+-- mode above ~300 MHz from its EDID and the picture blinks. Do not raise this
+-- back to 4K120 without an Ultra High Speed (48 Gbps) cable and HDMI UHD Color
+-- enabled for this port on the TV.
+hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "6661x3472", scale = 1.333333 })
 
 ----------------------------------------------------------------------
 -- Workspace assignments (migrated from nwg-displays workspaces.conf)
